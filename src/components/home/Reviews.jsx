@@ -5,7 +5,7 @@ function Reviews() {
   return (
     <div className="my-5">
       <Title name="customers review" />
-      <div className="flex justify-center items-center gap-1 px-2">
+      <div className="flex lg:flex-nowrap flex-wrap justify-center items-center gap-1 px-2">
         <ReviewCard />
         <ReviewCard />
         <ReviewCard />

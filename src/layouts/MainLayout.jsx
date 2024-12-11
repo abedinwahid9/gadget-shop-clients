@@ -4,17 +4,13 @@ import Footer from "../components/Footer";
 
 const MainLayout = () => {
   return (
-    <div>
-      <header>
-        <Navbar />
-      </header>
+    <>
+      <Navbar />
       <main className="container mx-auto ">
         <Outlet />
       </main>
-      <footer>
-        <Footer />
-      </footer>
-    </div>
+      <Footer />
+    </>
   );
 };
 

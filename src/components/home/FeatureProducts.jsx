@@ -5,7 +5,7 @@ function FeatureProducts() {
   return (
     <div className="my-2">
       <Title name="Feature Products" />
-      <div className="grid gap-2 grid-cols-4 px-2">
+      <div className="grid gap-2 lg:grid-cols-4 md:grid-cols-2 grid-cols-1 px-2">
         <ProductsCard />
         <ProductsCard />
         <ProductsCard />

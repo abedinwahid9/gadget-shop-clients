@@ -1,6 +1,27 @@
+import { Link, NavLink } from "react-router-dom";
+
 const Navbar = () => {
+  const navList = [
+    {
+      link: "/",
+      name: "Home",
+    },
+    {
+      link: "/products",
+      name: "Products",
+    },
+    {
+      link: "/about",
+      name: "about",
+    },
+    {
+      link: "/contact",
+      name: "contact",
+    },
+  ];
+
   return (
-    <div className="navbar bg-base-300">
+    <header className="navbar bg-base-300">
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -23,54 +44,47 @@ const Navbar = () => {
             tabIndex={0}
             className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
           >
-            <li>
-              <a>Item 1</a>
-            </li>
-            <li>
-              <a>Parent</a>
-              <ul className="p-2">
-                <li>
-                  <a>Submenu 1</a>
+            {navList?.map((nav, i) => {
+              return (
+                <li key={i}>
+                  <NavLink>Item 1</NavLink>
                 </li>
-                <li>
-                  <a>Submenu 2</a>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <a>Item 3</a>
-            </li>
+              );
+            })}
           </ul>
         </div>
-        <a className="btn btn-ghost text-xl">daisyUI</a>
+        <NavLink to="/" className="btn btn-ghost text-xl">
+          Gadget Shop
+        </NavLink>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
-          <li>
-            <a>Item 1</a>
-          </li>
-          <li>
-            <details>
-              <summary>Parent</summary>
-              <ul className="p-2">
-                <li>
-                  <a>Submenu 1</a>
-                </li>
-                <li>
-                  <a>Submenu 2</a>
-                </li>
-              </ul>
-            </details>
-          </li>
-          <li>
-            <a>Item 3</a>
-          </li>
+          {navList?.map((nav, i) => {
+            return (
+              <li key={i}>
+                <NavLink to={nav.link}>{nav.name}</NavLink>
+              </li>
+            );
+          })}
         </ul>
       </div>
       <div className="navbar-end">
-        <a className="btn">Button</a>
+        <div className="flex gap-2 items-center">
+          <Link
+            to="/login"
+            className="btn bg-slate-400  text-black border-slate-800 uppercase font-bold"
+          >
+            Login
+          </Link>
+          <Link
+            to="signup"
+            className="btn border-slate-800 bg-slate-800 text-white uppercase font-bold"
+          >
+            Sing up
+          </Link>
+        </div>
       </div>
-    </div>
+    </header>
   );
 };
 
