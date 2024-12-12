@@ -1,16 +1,32 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
+import { useForm } from "react-hook-form";
 
 function Register() {
   const { CreateUser } = useAuth();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+    reset,
+  } = useForm();
+  const navigate = useNavigate();
 
-  console.log(CreateUser);
+  const handleFrom = (data) => {
+    CreateUser(data.email, data.password).then((user) => {
+      if (user.user) {
+        navigate("/");
+        reset();
+      }
+    });
+  };
 
   return (
     <div className="hero bg-base-200 min-h-screen">
       <div className="hero-content flex-col lg:flex-row-reverse">
         <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
-          <form className="card-body">
+          <form onSubmit={handleSubmit(handleFrom)} className="card-body">
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Email</span>
@@ -19,8 +35,15 @@ function Register() {
                 type="email"
                 placeholder="email"
                 className="input input-bordered"
-                required
+                {...register("email", {
+                  required: true,
+                })}
               />
+              {errors.email && (
+                <p className="text-sm text-red-600 pt-1 capitalize font-semibold">
+                  email is required
+                </p>
+              )}
             </div>
             <div className="form-control">
               <label className="label">
@@ -30,11 +53,49 @@ function Register() {
                 type="password"
                 placeholder="password"
                 className="input input-bordered"
-                required
+                {...register("password", {
+                  required: true,
+                  minLength: 6,
+                })}
               />
+              {errors.password?.type === "required" && (
+                <p className="text-sm text-red-600 pt-1 capitalize font-semibold">
+                  password is required
+                </p>
+              )}
+              {errors.password?.type === "minLength" && (
+                <p className="text-sm text-red-600 pt-1 capitalize font-semibold">
+                  minimum password 6 length
+                </p>
+              )}
+            </div>
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Confirm Password</span>
+              </label>
+              <input
+                type="password"
+                placeholder="Confirm Password"
+                className="input input-bordered"
+                {...register("confirmpassword", {
+                  required: true,
+                  validate: (value) => {
+                    if (watch("password") != value) {
+                      return "your password is not match";
+                    }
+                  },
+                })}
+              />
+              {errors.confirmpassword && (
+                <p className="text-sm text-red-600 pt-1 capitalize font-semibold">
+                  enter your right correct password
+                </p>
+              )}
             </div>
             <div className="form-control mt-6">
-              <button className="btn btn-primary">Sign up</button>
+              <button type="submit" className="btn btn-primary">
+                Sign up
+              </button>
             </div>
             <p>
               already have an account!{" "}

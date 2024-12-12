@@ -1,6 +1,13 @@
 import { Link, NavLink } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 
 const Navbar = () => {
+  const { user, LogOut } = useAuth();
+
+  const handleLogout = () => {
+    LogOut();
+  };
+
   const navList = [
     {
       link: "/",
@@ -69,20 +76,51 @@ const Navbar = () => {
         </ul>
       </div>
       <div className="navbar-end">
-        <div className="flex gap-2 items-center">
-          <Link
-            to="/login"
-            className="btn bg-slate-400  text-black border-slate-800 uppercase font-bold"
-          >
-            Login
-          </Link>
-          <Link
-            to="signup"
-            className="btn border-slate-800 bg-slate-800 text-white uppercase font-bold"
-          >
-            Sing up
-          </Link>
-        </div>
+        {!user && (
+          <div className="flex gap-2 items-center">
+            <Link
+              to="/login"
+              className="btn bg-slate-400  text-black border-slate-800 uppercase font-bold"
+            >
+              Login
+            </Link>
+            <Link
+              to="signup"
+              className="btn border-slate-800 bg-slate-800 text-white uppercase font-bold"
+            >
+              Sing up
+            </Link>
+          </div>
+        )}
+        {user && (
+          <div className="dropdown dropdown-end">
+            <div tabIndex={0} role="button">
+              <div className="avatar">
+                <div className="ring-primary ring-offset-base-100 w-10 rounded-full ring ring-offset-2">
+                  <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+                </div>
+              </div>
+            </div>
+            <div
+              tabIndex={0}
+              className="dropdown-content flex gap-2 menu bg-base-100 rounded-box z-[1] w-56 py-2 shadow"
+            >
+              <Link className="p-2 hover:bg-emerald-400 rounded-md ">
+                {user.email}
+              </Link>
+              <Link className="p-2 hover:bg-emerald-400 rounded-md ">
+                Dashboard
+              </Link>
+
+              <button
+                onClick={handleLogout}
+                className="btn-sm bg-emerald-900 text-lg text-white rounded-md hover:bg-emerald-400"
+              >
+                Logout
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </header>
   );
