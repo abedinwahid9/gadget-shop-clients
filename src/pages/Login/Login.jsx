@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import { useForm } from "react-hook-form";
+import GoogleAuth from "../../components/share/GoogleAuth";
 
 function Login() {
   const { LoginUser } = useAuth();
@@ -80,6 +81,7 @@ function Login() {
               <button type="submit" className="btn btn-primary">
                 Login
               </button>
+              <GoogleAuth />
             </div>
             <p>
               Create a new account!{" "}

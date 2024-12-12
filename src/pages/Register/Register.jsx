@@ -1,6 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import { useForm } from "react-hook-form";
+import GoogleAuth from "../../components/share/GoogleAuth";
+import { useState } from "react";
 
 function Register() {
   const { CreateUser } = useAuth();
@@ -12,6 +14,7 @@ function Register() {
     reset,
   } = useForm();
   const navigate = useNavigate();
+  const [buyerHandle, setBuyerHandle] = useState(true);
 
   const handleFrom = (data) => {
     CreateUser(data.email, data.password).then((user) => {
@@ -20,6 +23,14 @@ function Register() {
         reset();
       }
     });
+  };
+
+  const handleOption = (e) => {
+    if (e.target.value == "buyer") {
+      setBuyerHandle(false);
+    } else {
+      setBuyerHandle(true);
+    }
   };
 
   return (
@@ -92,10 +103,28 @@ function Register() {
                 </p>
               )}
             </div>
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Role</span>
+              </label>
+              <select
+                {...register("role", {
+                  required: true,
+                })}
+                className="select select-bordered w-full max-w-xs"
+                onChange={handleOption}
+              >
+                <option value="buyer">Buyer</option>
+                <option selected value="seller">
+                  Seller
+                </option>
+              </select>
+            </div>
             <div className="form-control mt-6">
               <button type="submit" className="btn btn-primary">
                 Sign up
               </button>
+              {buyerHandle && <GoogleAuth />}
             </div>
             <p>
               already have an account!{" "}
