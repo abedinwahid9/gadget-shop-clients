@@ -3,6 +3,7 @@ import useAuth from "../../hooks/useAuth";
 import { useForm } from "react-hook-form";
 import GoogleAuth from "../../components/share/GoogleAuth";
 import { useState } from "react";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 function Register() {
   const { CreateUser } = useAuth();
@@ -15,18 +16,30 @@ function Register() {
   } = useForm();
   const navigate = useNavigate();
   const [buyerHandle, setBuyerHandle] = useState(true);
+  const useAxios = useAxiosPublic();
 
   const handleFrom = (data) => {
-    CreateUser(data.email, data.password).then((user) => {
+    const email = data.email;
+    const role = data.role;
+    const status = role === "buyer" ? "approved" : "pending";
+    const wishlist = [];
+
+    const userData = { email, role, status, wishlist };
+
+    CreateUser(data.email, data.password).then(async (user) => {
+      const res = await useAxios.post("/users", userData);
       if (user.user) {
         navigate("/");
         reset();
+      }
+      if (res.data.insertedId) {
+        console.log(res);
       }
     });
   };
 
   const handleOption = (e) => {
-    if (e.target.value == "buyer") {
+    if (e.target.value == "seller") {
       setBuyerHandle(false);
     } else {
       setBuyerHandle(true);
@@ -114,10 +127,10 @@ function Register() {
                 className="select select-bordered w-full max-w-xs"
                 onChange={handleOption}
               >
-                <option value="buyer">Buyer</option>
-                <option selected value="seller">
-                  Seller
+                <option selected value="buyer">
+                  Buyer
                 </option>
+                <option value="seller">Seller</option>
               </select>
             </div>
             <div className="form-control mt-6">
