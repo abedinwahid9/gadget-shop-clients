@@ -108,7 +108,10 @@ const Navbar = () => {
               <Link className="p-2 hover:bg-emerald-400 rounded-md ">
                 {user.email}
               </Link>
-              <Link className="p-2 hover:bg-emerald-400 rounded-md ">
+              <Link
+                to="/dashboard/overview"
+                className="p-2 hover:bg-emerald-400 rounded-md "
+              >
                 Dashboard
               </Link>
 
