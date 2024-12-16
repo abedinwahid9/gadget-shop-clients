@@ -5,24 +5,26 @@ import { MdAddBusiness } from "react-icons/md";
 import { FaHome, FaStore } from "react-icons/fa";
 import { TbLogout2 } from "react-icons/tb";
 import useUserData from "../../hooks/useUserData";
+import useAuth from "../../hooks/useAuth";
 
 const sellerRoutes = [
   {
     id: 1,
     title: "My products",
-    link: "/dashboard/myproducts",
+    link: "/dashboard/my-products",
     icon: <FaStore />,
   },
   {
     id: 2,
     title: "Add products",
-    link: "/dashboard/addproducts",
+    link: "/dashboard/add-products",
     icon: <MdAddBusiness />,
   },
 ];
 
 const Sidebar = () => {
   const userData = useUserData();
+  const { LogOut } = useAuth();
 
   return (
     <div className="bg-gray-200 border-r-2 border-black h-screen px-3 py-8">
@@ -63,6 +65,9 @@ const Sidebar = () => {
         </li>
         <li>
           <button
+            onClick={() => {
+              LogOut();
+            }}
             data-tip="logout"
             className="btn-sm w-full flex items-center gap-2 justify-center tooltip bg-emerald-900 text-lg text-white rounded-md hover:bg-emerald-400"
           >

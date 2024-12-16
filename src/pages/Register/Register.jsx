@@ -7,6 +7,7 @@ import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 function Register() {
   const { CreateUser } = useAuth();
+
   const {
     register,
     handleSubmit,
