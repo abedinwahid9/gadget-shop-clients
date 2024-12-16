@@ -1,16 +1,42 @@
 import { useForm } from "react-hook-form";
+import useAuth from "../../../hooks/useAuth";
+import useAxiosPublic from "../../../hooks/useAxiosPublic";
 
 const AddProducts = () => {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
-    reset,
   } = useForm();
+  const { user } = useAuth();
+  const useAxios = useAxiosPublic();
 
-  const handleFrom = (data) => {
-    console.log(data);
+  const handleFrom = async (data) => {
+    const title = data.title;
+    const brand = data.brand;
+    const price = parseFloat(data.price);
+    const stock = parseFloat(data.stock);
+    const category = data.category;
+    const productDescription = data.productDescription;
+
+    const product = {
+      title,
+      brand,
+      price,
+      stock,
+      category,
+      productDescription,
+      userEmail: user.email,
+    };
+
+    const token = localStorage.getItem("access-token");
+
+    const res = await useAxios.post("/add-products", product, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(res);
   };
 
   return (
@@ -109,6 +135,24 @@ const AddProducts = () => {
           )}
         </div>
       </div>
+      <div className="form-control w-full">
+        <label className="label">
+          <span className="label-text">Img Url</span>
+        </label>
+        <input
+          type="text"
+          placeholder="Img Url"
+          className="input input-bordered"
+          {...register("imgUrl", {
+            required: true,
+          })}
+        />
+        {errors.imgUrl && (
+          <p className="text-sm text-red-600 pt-1 capitalize font-semibold">
+            Img Url is required
+          </p>
+        )}
+      </div>
       <div className="form-control w-full ">
         <label className="label">
           <span className="label-text">Product Description</span>
@@ -117,11 +161,11 @@ const AddProducts = () => {
           type="text"
           placeholder="Product Description"
           className="input input-bordered pt-2"
-          {...register("productdescription", {
+          {...register("productDescription", {
             required: true,
           })}
         />
-        {errors.productdescription && (
+        {errors.productDescription && (
           <p className="text-sm text-red-600 pt-1 capitalize font-semibold">
             Product Description is required
           </p>
